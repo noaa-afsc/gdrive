@@ -1,0 +1,18 @@
+Package: gdrive
+Title: Google Shared Drive tools for NOAA
+Version: 0.0.0.9000
+Authors@R: 
+    person("Geoffrey", "Mayhew", , "geoff.mayhew@noaa.gov", role = c("aut", "cre"))
+Description: Tools for using the Google Shared Drive as a secure data repository, versioning data, segregating data from code repositories, and collaboration.
+License: file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3
+Imports: 
+    crayon,
+    gargle,
+    glue,
+    googledrive,
+    magrittr,
+    purrr,
+    rstudioapi
