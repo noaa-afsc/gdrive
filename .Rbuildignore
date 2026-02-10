@@ -1,0 +1,5 @@
+^LICENSE\.md$
+^gdrive\.Rproj$
+^\.github$
+^\.gitleaks\.toml$
+^\.Rproj\.user$
