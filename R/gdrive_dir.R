@@ -3,9 +3,11 @@
 #' Prints the structure of the Shared Google Drive to the console. It provides a count of the files within
 #' each folder and all subfolders. Items in the 'path' column can be copy-pasted to use as the
 #' `gdrive_path` argument of the `gdrive_set_dribble(gdrive_path)` function. Highly recommended to use the `folder`
-#' argument as it will speed up your search.
+#' argument as it will speed up your search. Note that this function only works for shared drives in which you have
+#' member-level access, not just folder-level access.
 #'
-#' @param shared_id An alias of a Shared Google Drive. By default, the drive for FMA Analytics.
+#' @param shared_id An alias of a Shared Google Drive. By default, searches for the `default_gdrive_id` variable in your
+#' .Renviron file.
 #' @param folder A dribble or a character file path of folders, i.e., "Projects", that will narrow down your search.
 #'
 #' @details
@@ -23,17 +25,15 @@
 #' }
 #'
 #' @export
-gdrive_dir <- function(shared_id = c("Analytics"), folder = NULL) {
+gdrive_dir <- function(shared_id = "default_gdrive_id", folder = NULL) {
 
   if( !is.character(shared_id) | length(shared_id) != 1) stop("'id' needs to be a length = 1 character string.")
 
   # Ensure googledrive token is active
   gdrive_token()
 
-  # Recall Hard coded dids from an alias
-  if( shared_id == "Analytics") {
-    id <- "0AJcHJWlPgKIgUk9PVA"
-  } else id <- shared_id
+  # Check the address of the shared_id
+  id <- gdrive_get_shared_id(shared_id)
 
   tryCatch(
     gdrive_head <-  googledrive::with_drive_quiet(googledrive::shared_drive_get(id = id)),

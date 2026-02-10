@@ -5,13 +5,15 @@
 #' `gdrive_download()`. By default, it searches the FMA Analytical Services Program shared drive.
 #'
 #' @param gdrive_path a character string of the folder path, with each folder name followed by `/`
-#' @param folder_id a character string of the folder's ID, which must be used instead of \code{gdrive_path} for
-#' collaborators with only shared access to a shared drive's subfolder and not root access to the shared drive.
 #' @param shared_id a character string of the shared drive's ID or an alias for the Shared Drive to connect to. The
-#' default alias, `Analytics`, is so far the only alias that is currently recognized.
+#' default, "default_gdrive_id", can be specified in your .Renviron file. See ?gdrive_get_shared_id for instructions
+#' on how to set this up.
+#' @param folder_id a character string of the folder's ID, which can be used instead of \code{gdrive_path} but must be
+#' used for collaborators with only shared folder-level access to a shared drive's subfolder and not member access to
+#' the shared drive.
 #'
 #' @details If you do not know the folder path to the folder you want to interact with, run `gdrive_dir()` to get
-#' the view the folder structure of the Share Google Drive and copy-paste the `path`
+#' the view the folder structure of the Share Google Drive and copy-paste the `path`.
 #'
 #' @return Returns a dribble class object
 #'
@@ -21,7 +23,7 @@
 #' }
 #'
 #' @export
-gdrive_set_dribble <- function(gdrive_path = NULL, shared_id = "Analytics", folder_id = NULL){
+gdrive_set_dribble <- function(gdrive_path = NULL, shared_id = "default_gdrive_id", folder_id = NULL){
 
   # folder_id is required if working with collaborators who have shared access to a subfolder but not root access.
   if(is.null(gdrive_path) & is.null(folder_id)) stop("Either gdrive_path and/or folder_id must be specified!")
@@ -41,11 +43,8 @@ gdrive_set_dribble <- function(gdrive_path = NULL, shared_id = "Analytics", fold
     )
     id <- dribble_out$drive_resource[[1]]$driveId
   } else {
-    # If you want to specify the project folder path, you also need the shared folder's id and access to it!
-    # Recall hard coded shared folder ids from the alias
-    if( shared_id == "Analytics") {
-      id <- "0AJcHJWlPgKIgUk9PVA"
-    } else {id <- shared_id}
+    # Check the address of the shared_id
+    id <- gdrive_get_shared_id(shared_id)
     dribble_out <- googledrive::with_drive_quiet(
       googledrive::drive_get(path = gdrive_path, shared_drive = googledrive::as_id(id))
     )

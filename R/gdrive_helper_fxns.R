@@ -4,6 +4,7 @@
 #' communicate with the googledrive
 #'
 #' @return Automatically uses the user's stored NOAA e-mail to connect if no token is already established
+#' @keywords internal
 gdrive_token <- function() {
   # To deauthorize in testing: googledrive::drive_deauth()
   
@@ -11,12 +12,61 @@ gdrive_token <- function() {
   
 }
 
+#' Specify a Google Shared Drive
+#'
+#' @param shared_id Either an alias for a shared_id stored in your .Renviron file or the drive_id of Google Shared Drive
+#' that you have access to.
+#'
+#' @details
+#' By default, the shared_id argument of the gdrive_set_dribble() and gdrive_dir() functions check your .Renviron file
+#' for a value named `default_gdrive_id` that contains the drive_id of a Google Shared Drive. 
+#'
+#' @return Returns the drive_id of a shared google drive
+#' @keywords internal
+gdrive_get_shared_id <- function(shared_id) {
+
+  if(shared_id == "default_gdrive_id") {
+    shared_id.pull <- Sys.getenv("default_gdrive_id")
+    if(nchar(shared_id.pull) == 0) {
+      cat("You have not yet specified a Google Shared Drive as your default.\n")
+      cat("See ?gdrive_get_shared_id for instructions on how to set this up.")
+      return()
+    } else {
+      return(shared_id.pull)
+    }
+  } else {
+    # If it's not the `default_drive_id`, see if it either matches another alias in the .Renviron file
+    shared_id.pull <- Sys.getenv(shared_id)
+    if(nchar(shared_id.pull) == 0) {
+      # If it doesn't match an alias, either it was not specified in .Renviron or OR it is already a shared_id!
+
+      # If the formatting is correct for a shared drive ID, let it pass
+      if(grepl("^0A[a-zA-Z0-9_-]{17}$", shared_id)) {
+        return(shared_id)
+      } else {
+        cat(paste0("The alias '", shared_id,  "' is not specified in your .Renviron file.\n"))
+        cat(paste0("Run usethis::edit_r_environ() to add your alias using the syntax:\n."))
+        cat(paste0("  <your_alias> = <drive_id>\n"))
+        cat("Recall that the <drive_id> can be pasted from the drive's URL:\n")
+        cat("   https://drive.google.com/drive/folders/<drive_id>\n")
+      }
+      return()
+    } else {
+      return(shared_id)
+    }
+  }
+}
+
+
+
+
 #' \code{shared_dribe_ls()} is used in place of \code{googledrive::drive_ls()} which does not work for users with only
 #' shared access to a subfolder of the shared drive and not root access.
 #'
 #' @param gdrive_dribble a \code{dribble} containing the contents of a Shared Gdrive folder
 #'
 #' @return Returns a dribble of all items within the specified folder.
+#' @keywords internal
 shared_drive_ls <- function(gdrive_dribble) {
   
   # Make a custom API request
@@ -46,6 +96,7 @@ shared_drive_ls <- function(gdrive_dribble) {
 #' @param dribble a \code{dribble} containing the contents of a Shared Gdrive folder
 #'
 #' @return Returns a list of two dribbles, the first is the parent folder and the second is the children folders
+#' @keywords internal
 dir_search <- function(dribble) {
   
   dribble_lst <- vector(mode = "list", length = nrow(dribble))
@@ -102,6 +153,7 @@ dir_search <- function(dribble) {
 #' @param local_path a character string of the local file path to the `.rdata` or `.rds` file to either upload or download.
 #'
 #' @return Returns a list of the parsed path as well as logical checks for whether the path was found or contains a version suffix.
+#' @keywords internal
 parse_local_path <- function(local_path){
   
   # Error checks
@@ -141,6 +193,7 @@ parse_local_path <- function(local_path){
 #'
 #' @return Returns a list of `dribble` for the Gdrive file, a list of the file's revision history, and the file's current version number.
 #' @importFrom crayon bold
+#' @keywords internal
 parse_dribble <- function(gdrive_dribble, l_path) {
   
   # Can the Gdrive folder be found?
@@ -205,7 +258,6 @@ parse_dribble <- function(gdrive_dribble, l_path) {
 }
 
 
-
 #' Compare the Local File and the Current Version of the Gdrive File
 #'
 #' A background helper function for `gdrive_upload()` and `gdrive_download()` that helps determine whether those
@@ -219,6 +271,7 @@ parse_dribble <- function(gdrive_dribble, l_path) {
 #' @importFrom crayon bold
 #' @importFrom crayon red
 #' @importFrom crayon yellow
+#' @keywords internal
 compare_local_and_gdrive <- function(l_path, g_path){
   
   # Get information of local file
