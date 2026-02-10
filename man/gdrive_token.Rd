@@ -13,3 +13,4 @@ Automatically uses the user's stored NOAA e-mail to connect if no token is alrea
 \code{drive_token()} is used by all \code{gdrive_} functions to ensure the user has authenticated their token to
 communicate with the googledrive
 }
+\keyword{internal}

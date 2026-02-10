@@ -17,3 +17,4 @@ Returns a dribble of all items within the specified folder.
 \code{shared_dribe_ls()} is used in place of \code{googledrive::drive_ls()} which does not work for users with only
 shared access to a subfolder of the shared drive and not root access.
 }
+\keyword{internal}

@@ -15,3 +15,4 @@ Returns a list of two dribbles, the first is the parent folder and the second is
 \description{
 \code{dir_search()} is used recursively by \code{gdrive_ls()} to identify the folder structure of the Shared Google Drive
 }
+\keyword{internal}

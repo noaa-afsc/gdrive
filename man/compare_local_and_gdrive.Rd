@@ -19,3 +19,4 @@ modification times, and if needed, the raw bytes of the Gdrive file.
 A background helper function for \code{gdrive_upload()} and \code{gdrive_download()} that helps determine whether those
 operations are necessary (e.g., skips these actions if the files are already identical).
 }
+\keyword{internal}

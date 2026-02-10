@@ -6,7 +6,7 @@
 \usage{
 gdrive_set_dribble(
   gdrive_path = NULL,
-  shared_id = "Analytics",
+  shared_id = "default_gdrive_id",
   folder_id = NULL
 )
 }
@@ -14,10 +14,12 @@ gdrive_set_dribble(
 \item{gdrive_path}{a character string of the folder path, with each folder name followed by \code{/}}
 
 \item{shared_id}{a character string of the shared drive's ID or an alias for the Shared Drive to connect to. The
-default alias, \code{Analytics}, is so far the only alias that is currently recognized.}
+default, "default_gdrive_id", can be specified in your .Renviron file. See ?gdrive_get_shared_id for instructions
+on how to set this up.}
 
-\item{folder_id}{a character string of the folder's ID, which must be used instead of \code{gdrive_path} for
-collaborators with only shared access to a shared drive's subfolder and not root access to the shared drive.}
+\item{folder_id}{a character string of the folder's ID, which can be used instead of \code{gdrive_path} but must be
+used for collaborators with only shared folder-level access to a shared drive's subfolder and not member access to
+the shared drive.}
 }
 \value{
 Returns a dribble class object
@@ -29,7 +31,7 @@ class object for use by key functions to interact with the drive, including \cod
 }
 \details{
 If you do not know the folder path to the folder you want to interact with, run \code{gdrive_dir()} to get
-the view the folder structure of the Share Google Drive and copy-paste the \code{path}
+the view the folder structure of the Share Google Drive and copy-paste the \code{path}.
 }
 \examples{
 \dontrun{

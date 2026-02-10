@@ -15,3 +15,4 @@ Returns a list of the parsed path as well as logical checks for whether the path
 \description{
 A background helper function for \code{gdrive_download()} and \code{gdrive_upload()} to identify the local files to interact with.
 }
+\keyword{internal}
