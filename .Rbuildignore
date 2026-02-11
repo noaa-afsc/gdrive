@@ -3,3 +3,4 @@
 ^\.github$
 ^\.gitleaks\.toml$
 ^\.Rproj\.user$
+^test$
