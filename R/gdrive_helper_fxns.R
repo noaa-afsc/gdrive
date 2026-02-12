@@ -53,6 +53,7 @@ gdrive_token <- function() {
         cat("2: On your cloud instance, navigate to your 'files' pane \u2192 More \u2192 and enable 'Show Hidden Files'\n")
         cat("   Navigate to your newly-created `secrets/gargle` folder.\n")
         cat("   Click `Upload` and select your token from your local machine.\n\n")
+        return()
       }
     } else {
       # If NOT on the cloud workstation, use locally saved token
