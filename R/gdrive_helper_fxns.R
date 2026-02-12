@@ -27,7 +27,7 @@ gdrive_token <- function() {
         token_file <- list.files(secrets_dir, pattern = "*noaa.gov")[1]
         
         # If a token exists, use it
-        if(length(token_file) > 0) {
+        if(!is.na(token_file)) {
           token <- readRDS(paste0(secrets_dir, "/", token_file))
           token$cache_path <- NULL
           googledrive::drive_auth(token = token)
