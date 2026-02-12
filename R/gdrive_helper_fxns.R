@@ -12,8 +12,8 @@ gdrive_token <- function() {
   if(isFALSE(googledrive::drive_has_token())) {
     
     # Setup for Google Cloud Workstation
-    secrets_dir <- file.path(home_dir, ".secrets", "gargle")
     home_dir <- "/home/user"
+    secrets_dir <- file.path(home_dir, ".secrets", "gargle")
     
     # Determine whether we are in cloud environment or not
     is_cloud <- Sys.info()[["sysname"]] == "Linux" && dir.exists(home_dir)
