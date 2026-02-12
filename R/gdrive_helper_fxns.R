@@ -1,16 +1,66 @@
 #' For gdrive_ functions: check for googledrive token and if not active, use NOAA e-mail
 #'
 #' \code{drive_token()} is used by all \code{gdrive_} functions to ensure the user has authenticated their token to
-#' communicate with the googledrive
+#' communicate with the googledrive. Checks to see if the user is on a Google Cloud Workstation and helps the user
+#' set up their token if one is not found.
 #'
-#' @return Automatically uses the user's stored NOAA e-mail to connect if no token is already established
+#' @return Automatically uses the user's stored NOAA e-mail to connect if no token is already established.
 #' @keywords internal
 gdrive_token <- function() {
   # To deauthorize in testing: googledrive::drive_deauth()
   
-  if(isFALSE(googledrive::drive_has_token())) googledrive::drive_auth(email = "*@noaa.gov")
-  
+  if(isFALSE(googledrive::drive_has_token())) {
+    
+    # Setup for Google Cloud Workstation
+    secrets_dir <- file.path(home_dir, ".secrets", "gargle")
+    home_dir <- "/home/user"
+    
+    # Determine whether we are in cloud environment or not
+    is_cloud <- Sys.info()[["sysname"]] == "Linux" && dir.exists(home_dir)
+    
+    if(is_cloud) {
+      # If on the cloud workstation, see if a token already exists
+      
+      if (dir.exists(secrets_dir)) {
+        # the secrets directory exists, look for a token
+        
+        token_file <- list.files(secrets_dir, pattern = "*noaa.gov")[1]
+        
+        # If a token exists, use it
+        if(length(token_file) > 0) {
+          token <- readRDS(paste0(secrets_dir, "/", token_file))
+          token$cache_path <- NULL
+          googledrive::drive_auth(token = token)
+          if(is.null(googledrive::drive_user())) {
+            stop("A token was found but it didn't work. Double-check your setup!")
+          } else {
+            cli::cli_inform(paste0(
+              "i" = "The {.pkg googledrive} package is using a provided token for {.email {token$email}}."
+            ))
+          }
+        }
+        
+      } else {
+        # If the secrets directly doesn't exist, create it
+        dir.create(secrets_dir, recursive = TRUE)
+        # chmod 700: rwx for user, nothing for anyone else
+        system(paste("chmod 700", file.path(home_dir, ".secrets")))
+        message("Secrets folder created at: ",  file.path("/.secrets", "gargle"))
+        # Instruct the user for how to manually add their token to their cloud instance
+        cat("Please upload your token from your non-cloud local machine to your cloud's secrets folder.\n\n")
+        cat(paste0("1: On your local machine, run:     ", crayon::green("gargle:::gargle_oauth_sitrep()\n")))
+        cat("   to locate your most recently-created token ending in '@noaa.gov'\n\n")
+        cat("2: On your cloud instance, navigate to your 'files' pane \u2192 More \u2192 and enable 'Show Hidden Files'\n")
+        cat("   Navigate to your newly-created `secrets/gargle` folder.\n")
+        cat("   Click `Upload` and select your token from your local machine.\n\n")
+      }
+    } else {
+      # If NOT on the cloud workstation, use locally saved token
+      googledrive::drive_auth(email = "*@noaa.gov")
+    }
+  }
 }
+
 
 #' Specify a Google Shared Drive
 #'
@@ -85,8 +135,8 @@ shared_drive_ls <- function(gdrive_dribble) {
   )
   # Make the request and convert to dribble class
   googledrive::with_drive_quiet(
-    googledrive::do_paginated_request(req) %>%
-      purrr::map("files") %>% purrr::flatten() %>%
+    googledrive::do_paginated_request(req) |>
+      purrr::map("files") |> purrr::flatten() |>
       googledrive::as_dribble()
   )
 }

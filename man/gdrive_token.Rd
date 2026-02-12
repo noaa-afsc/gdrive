@@ -7,10 +7,11 @@
 gdrive_token()
 }
 \value{
-Automatically uses the user's stored NOAA e-mail to connect if no token is already established
+Automatically uses the user's stored NOAA e-mail to connect if no token is already established.
 }
 \description{
 \code{drive_token()} is used by all \code{gdrive_} functions to ensure the user has authenticated their token to
-communicate with the googledrive
+communicate with the googledrive. Checks to see if the user is on a Google Cloud Workstation and helps the user
+set up their token if one is not found.
 }
 \keyword{internal}
