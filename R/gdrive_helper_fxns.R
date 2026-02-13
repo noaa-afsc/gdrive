@@ -123,7 +123,7 @@ gdrive_get_shared_id <- function(shared_id) {
     } else {
       return(shared_id)
     }
-  } else invisible(TRUE)
+  }
 }
 
 
