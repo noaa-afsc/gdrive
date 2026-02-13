@@ -105,7 +105,7 @@ gdrive_get_shared_id <- function(shared_id) {
         "\033[1m  default_gdrive_id = \"<drive_id>\"\033[22m\n\n",
         "The \033[1m<drive_id>\033[22m can be pasted from the shared drive's URL:\n",
         "   https://drive.google.com/drive/folders/\033[1m<drive_id>\033[22m\n\n",
-        "Then, save your .Renviron file and restart your session [Ctrl + Shift + F10]" 
+        "Then, save your .Renviron file and restart your session [Ctrl + Shift + F10]\n\n" 
       ))
       return()
     } else {
@@ -128,7 +128,7 @@ gdrive_get_shared_id <- function(shared_id) {
           "\033[1m", shared_id, " = \"<drive_id>\"\033[22m\n\n",
           "The \033[1m<drive_id>\033[22m can be pasted from the shared drive's URL:\n",
           "   https://drive.google.com/drive/folders/\033[1m<drive_id>\033[22m\n\n",
-          "Then, save your .Renviron file and restart your session [Ctrl + Shift + F10]" 
+          "Then, save your .Renviron file and restart your session [Ctrl + Shift + F10]\n\n" 
         ))
       }
       return()
