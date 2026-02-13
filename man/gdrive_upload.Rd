@@ -4,12 +4,14 @@
 \alias{gdrive_upload}
 \title{Upload a File to the Google Shared Drive}
 \usage{
-gdrive_upload(local_path, gdrive_dribble)
+gdrive_upload(local_path, gdrive_dribble, skip_prompt = FALSE)
 }
 \arguments{
 \item{local_path}{the file path to the local file that you wish to upload or update.}
 
 \item{gdrive_dribble}{the \code{dribble} object of the Gdrive folder you wish to upload to, created by \code{gdrive_set_dribble}.}
+
+\item{skip_prompt}{skips the prompt asking the user if they are sure they want to upload when local is ahead of gdrive. FALSE by default.}
 }
 \value{
 Returns messages regarding whether the upload was completed, and if so, the version number.

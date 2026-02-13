@@ -8,6 +8,7 @@
 #'
 #' @param local_path the file path to the local file that you wish to upload or update.
 #' @param gdrive_dribble the `dribble` object of the Gdrive folder you wish to upload to, created by `gdrive_set_dribble`.
+#' @param skip_prompt skips the prompt asking the user if they are sure they want to upload when local is ahead of gdrive. FALSE by default.
 #' @export
 #'
 #' @return Returns messages regarding whether the upload was completed, and if so, the version number.
