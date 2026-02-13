@@ -99,8 +99,14 @@ gdrive_get_shared_id <- function(shared_id) {
   if(shared_id == "default_gdrive_id") {
     shared_id.pull <- Sys.getenv("default_gdrive_id")
     if(nchar(shared_id.pull) == 0) {
-      cat("You have not yet specified a Google Shared Drive as your default.\n")
-      cat(paste0("See ", crayon::green("?gdrive_get_shared_id"), " for instructions on how to set this up.\n\n"))
+      cat("You have not yet specified a Google Shared Drive as your default.\n\n")
+      cat(paste0(
+        "Run ", crayon::green("usethis::edit_r_environ()"), " to add your default shared drive ID using the syntax:\n",
+        "\033[1m  default_gdrive_id = \"<drive_id>\"\033[22m\n\n",
+        "The \033[1m<drive_id>\033[22m can be pasted from the shared drive's URL:\n",
+        "   https://drive.google.com/drive/folders/\033[1m<drive_id>\033[22m\n\n",
+        "Then, save your .Renviron file and restart your session [Ctrl + Shift + F10]" 
+      ))
       return()
     } else {
       return(shared_id.pull)
@@ -116,10 +122,14 @@ gdrive_get_shared_id <- function(shared_id) {
         return(shared_id)
       } else {
         cat(paste0("The alias '", shared_id,  "' is not specified in your .Renviron file.\n"))
-        cat(paste0("Run usethis::edit_r_environ() to add your alias using the syntax:\n."))
-        cat(paste0("  <your_alias> = <drive_id>\n"))
-        cat("Recall that the <drive_id> can be pasted from the drive's URL:\n")
-        cat("   https://drive.google.com/drive/folders/<drive_id>\n")
+
+        cat(paste0(
+          "Run ", crayon::green("usethis::edit_r_environ()"), " to add your default shared drive ID using the syntax:\n",
+          "\033[1m", shared_id, " = \"<drive_id>\"\033[22m\n\n",
+          "The \033[1m<drive_id>\033[22m can be pasted from the shared drive's URL:\n",
+          "   https://drive.google.com/drive/folders/\033[1m<drive_id>\033[22m\n\n",
+          "Then, save your .Renviron file and restart your session [Ctrl + Shift + F10]" 
+        ))
       }
       return()
     } else {
