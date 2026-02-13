@@ -16,8 +16,8 @@
 gdrive_versions <- function(local_path, gdrive_dribble){
 
   # Ensure googledrive token is active
-  gdrive_token()
-
+  if(!gdrive_token()) return(invisible())
+  
   # This function takes the local path and removes any directories preceding the file name.
   local_path <- basename(local_path)
 

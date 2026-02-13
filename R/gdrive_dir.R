@@ -30,7 +30,7 @@ gdrive_dir <- function(shared_id = "default_gdrive_id", folder = NULL) {
   if( !is.character(shared_id) | length(shared_id) != 1) stop("'id' needs to be a length = 1 character string.")
 
   # Ensure googledrive token is active
-  gdrive_token()
+  if(!gdrive_token()) return(invisible())
 
   # Check the address of the shared_id
   id <- gdrive_get_shared_id(shared_id)
