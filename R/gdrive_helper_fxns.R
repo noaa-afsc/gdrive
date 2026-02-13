@@ -27,8 +27,8 @@ gdrive_token <- function() {
         "   to locate your most recently-created token ending in '@noaa.gov'\n",
         "   Just take note of where this is, as you're going to navigate there in a moment.\n\n",
         "2: \033[1mOn your cloud instance\033[22m, navigate to your 'files' pane ", "\u2192 More \u2192 and enable 'Show Hidden Files'\n",
-        "   Navigate to your newly-created `.secrets/gargle` folder.\n",
-        "   Click `Upload` and select your token from your local machine.\n\n"
+        "   Click on 'Home' and navigate to your newly-created `.secrets/gargle` folder.\n",
+        "   Click `Upload`, then 'Choose File' and navigate to your token from your local machine.\n\n"
       )
       
       # If on the cloud workstation, see if a token already exists
