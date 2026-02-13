@@ -48,12 +48,13 @@ gdrive_token <- function() {
             cli::cli_inform(paste0(
               "i" = "The {.pkg googledrive} package is using a provided token for {.email {token$email}}."
             ))
+            return(invisible(TRUE))
           }
         } else {
           # If the .secrets/gargle/ folder exists but there is no token, ask the user to add them 
           # Instruct the user for how to manually add their token to their cloud instance
           cat(token_setup_msg)
-          return(invisible())
+          return(invisible(FALSE))
         }
         
       } else {
@@ -69,11 +70,12 @@ gdrive_token <- function() {
         
         # Instruct the user for how to manually add their token to their cloud instance
         cat(token_setup_msg)
-        return(invisible())
+        return(invisible(FALSE))
       }
     } else {
       # If NOT on the cloud workstation, use locally saved token
       googledrive::drive_auth(email = "*@noaa.gov")
+      return(invisble(TRUE)
     }
   }
 }
@@ -96,7 +98,7 @@ gdrive_get_shared_id <- function(shared_id) {
     shared_id.pull <- Sys.getenv("default_gdrive_id")
     if(nchar(shared_id.pull) == 0) {
       cat("You have not yet specified a Google Shared Drive as your default.\n")
-      cat("See ?gdrive_get_shared_id for instructions on how to set this up.")
+      cat(paste0("See ", crayon::green("?gdrive_get_shared_id"), " for instructions on how to set this up.\n\n"))
       return()
     } else {
       return(shared_id.pull)
@@ -121,7 +123,7 @@ gdrive_get_shared_id <- function(shared_id) {
     } else {
       return(shared_id)
     }
-  }
+  } else invisible(TRUE)
 }
 
 
