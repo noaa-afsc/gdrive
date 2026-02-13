@@ -35,11 +35,11 @@ gdrive_token <- function() {
       if (dir.exists(gargle_dir)) {
         # the secrets directory exists, look for a token
         
-        token_file <- list.files(secrets_dir, pattern = "*noaa.gov")[1]
+        token_file <- list.files(gargle_dir, pattern = "*noaa.gov")[1]
         
         # If a token exists, use it
         if(!is.na(token_file)) {
-          token <- readRDS(paste0(secrets_dir, "/", token_file))
+          token <- readRDS(paste0(gargle_dir, "/", token_file))
           token$cache_path <- NULL
           googledrive::drive_auth(token = token)
           if(is.null(googledrive::drive_user())) {
