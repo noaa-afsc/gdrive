@@ -107,7 +107,7 @@ gdrive_get_shared_id <- function(shared_id) {
         "   https://drive.google.com/drive/folders/\033[1m<drive_id>\033[22m\n\n",
         "Then, save your .Renviron file and restart your session [Ctrl + Shift + F10]\n\n" 
       ))
-      return()
+      stop("Set up a 'default_gdrive_id' in your .Renviron file.")
     } else {
       return(shared_id.pull)
     }
@@ -122,7 +122,6 @@ gdrive_get_shared_id <- function(shared_id) {
         return(shared_id)
       } else {
         cat(paste0("The alias '", shared_id,  "' is not specified in your .Renviron file.\n"))
-
         cat(paste0(
           "Run ", crayon::green("usethis::edit_r_environ()"), " to add your default shared drive ID using the syntax:\n",
           "\033[1m", shared_id, " = \"<drive_id>\"\033[22m\n\n",
