@@ -66,6 +66,8 @@ gdrive_token <- function() {
           # chmod 700: rwx for user, nothing for anyone else
           system(paste("chmod 700", secrets_dir))
           message("Secrets folder created at: ",  file.path("/.secrets", "gargle"))
+          # See if this refreshes the files pane to show the newly created /.secrets folder
+          rstudioapi::filesPaneNavigate(home_dir)
         } 
         
         # Instruct the user for how to manually add their token to their cloud instance
