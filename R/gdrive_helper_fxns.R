@@ -79,7 +79,7 @@ gdrive_token <- function() {
       googledrive::drive_auth(email = "*@noaa.gov")
       return(invisble(TRUE))
     }
-  }
+  } else return(invisible(TRUE))
 }
 
 
