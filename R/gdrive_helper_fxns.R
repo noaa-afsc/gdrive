@@ -13,15 +13,26 @@ gdrive_token <- function() {
     
     # Setup for Google Cloud Workstation
     home_dir <- "/home/user"
-    secrets_dir <- file.path(home_dir, ".secrets", "gargle")
-    
+    secrets_dir <- file.path(home_dir, ".secrets")
+    gargle_dir <- file.path(secrets_dir, "gargle")
     # Determine whether we are in cloud environment or not
     is_cloud <- Sys.info()[["sysname"]] == "Linux" && dir.exists(home_dir)
     
     if(is_cloud) {
-      # If on the cloud workstation, see if a token already exists
       
-      if (dir.exists(secrets_dir)) {
+      # Set-up instructions for adding your token
+      token_setup_msg <- paste0(
+        "\033[1mPlease upload your token from your non-cloud local machine to your cloud's secrets folder.\033[22m\n\n",
+        "1: \033[1mOn your local machine\033[22m, run:     ", crayon::green("gargle:::gargle_oauth_sitrep()"), "\n",
+        "   to locate your most recently-created token ending in '@noaa.gov'\n",
+        "   Just take note of where this is, as you're going to navigate there in a moment.\n\n",
+        "2: \033[1mOn your cloud instance\033[22m, navigate to your 'files' pane ", "\u2192 More \u2192 and enable 'Show Hidden Files'\n",
+        "   Navigate to your newly-created `.secrets/gargle` folder.\n",
+        "   Click `Upload` and select your token from your local machine.\n\n"
+      )
+      
+      # If on the cloud workstation, see if a token already exists
+      if (dir.exists(gargle_dir)) {
         # the secrets directory exists, look for a token
         
         token_file <- list.files(secrets_dir, pattern = "*noaa.gov")[1]
@@ -38,22 +49,27 @@ gdrive_token <- function() {
               "i" = "The {.pkg googledrive} package is using a provided token for {.email {token$email}}."
             ))
           }
+        } else {
+          # If the .secrets/gargle/ folder exists but there is no token, ask the user to add them 
+          # Instruct the user for how to manually add their token to their cloud instance
+          cat(token_setup_msg)
+          return(invisible())
         }
         
       } else {
-        # If the secrets directly doesn't exist, create it
-        dir.create(secrets_dir, recursive = TRUE)
-        # chmod 700: rwx for user, nothing for anyone else
-        system(paste("chmod 700", file.path(home_dir, ".secrets")))
-        message("Secrets folder created at: ",  file.path("/.secrets", "gargle"))
+        
+        # first see if a .secrets folder exists and if not, create it.
+        if(!dir.exists(secrets_dir) | !dir.exists(gargle_dir)) {
+          # If the secrets directly doesn't exist, create it and the gargle subfolder
+          dir.create(gargle_dir, recursive = TRUE)
+          # chmod 700: rwx for user, nothing for anyone else
+          system(paste("chmod 700", secrets_dir))
+          message("Secrets folder created at: ",  file.path("/.secrets", "gargle"))
+        } 
+        
         # Instruct the user for how to manually add their token to their cloud instance
-        cat("Please upload your token from your non-cloud local machine to your cloud's secrets folder.\n\n")
-        cat(paste0("1: On your local machine, run:     ", crayon::green("gargle:::gargle_oauth_sitrep()\n")))
-        cat("   to locate your most recently-created token ending in '@noaa.gov'\n\n")
-        cat("2: On your cloud instance, navigate to your 'files' pane \u2192 More \u2192 and enable 'Show Hidden Files'\n")
-        cat("   Navigate to your newly-created `secrets/gargle` folder.\n")
-        cat("   Click `Upload` and select your token from your local machine.\n\n")
-        return()
+        cat(token_setup_msg)
+        return(invisible())
       }
     } else {
       # If NOT on the cloud workstation, use locally saved token
