@@ -24,8 +24,8 @@ gdrive_ls <- function(gdrive_dribble){
   }
 
   # Ensure googledrive token is active
-  gdrive_token()
-
+  if(!gdrive_token()) return(invisible())
+  
   # Get all items in gdrive_dibble
   # dribble_items <- googledrive::drive_ls(gdrive_dribble)  # doesn't work for collaborators with shared access
   dribble_items <- shared_drive_ls(gdrive_dribble)

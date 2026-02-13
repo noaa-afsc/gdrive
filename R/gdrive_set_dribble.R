@@ -33,8 +33,8 @@ gdrive_set_dribble <- function(gdrive_path = NULL, shared_id = "default_gdrive_i
   }
 
   # Ensure googledrive token is active
-  gdrive_token()
-
+  if(!gdrive_token()) return(invisible())
+  
   # Get the dribble object from the gdrive_path. It will contain rows for all enclosed folders and files.
   if(!is.null(folder_id)) {
     # If using the folder_id, derive the shared drive ID from the folder's dribble
