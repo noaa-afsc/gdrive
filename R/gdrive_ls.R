@@ -24,7 +24,7 @@ gdrive_ls <- function(gdrive_dribble){
   }
 
   # Ensure googledrive token is active
-  if(!gdrive_token()) return(invisible())
+  if(!gdrive_token()) {return(invisible())}
   
   # Get all items in gdrive_dibble
   # dribble_items <- googledrive::drive_ls(gdrive_dribble)  # doesn't work for collaborators with shared access
@@ -39,21 +39,24 @@ gdrive_ls <- function(gdrive_dribble){
     cat(paste0("No files exist in ", crayon::yellow(gdrive_dribble$path), ".\n"))
   } else {
     # Include the create dates in the output
-    create_dates <- create_dates <- as.POSIXlt(
+    create_dates <- as.POSIXlt(
       sapply(dribble_items$drive_resource, "[[", "createdTime"),
       format = "%Y-%m-%dT%H:%M:%OS", tz = "GMT")
-    # Convert create dates to local timezone
+    # Include the modified dates in the output
+    modify_dates <- as.POSIXlt(
+      sapply(dribble_items$drive_resource, "[[", "modifiedTime"),
+      format = "%Y-%m-%dT%H:%M:%OS", tz = "GMT")
+    # Convert dates to local timezone
     dribble_items$create_date <- as.POSIXct(format(as.POSIXct(create_dates), tz = Sys.timezone(), usetz = T))
+    dribble_items$modify_date <- as.POSIXct(format(as.POSIXct(modify_dates), tz = Sys.timezone(), usetz = T))
+    
     # Draw the file sizes from the drive_resources
     dribble_items$size <- sapply(
       as.integer(sapply(dribble_items$drive_resource, "[[", "size")),
       function(x) format(structure(x, class = "object_size"), units = "auto")
     )
 
-    # Return a data.frame without drive_resources so this object can't be abused as a dribble
-    dribble_items$file_name <- dribble_items$name
-    as.data.frame(
-      dribble_items[order(dribble_items$create_date, decreasing = T), c("file_name", "create_date", "size")]
-    )
+    dribble_items[, c("name", "modify_date", "create_date", "size", "drive_resource")]
+    
   }
 }
