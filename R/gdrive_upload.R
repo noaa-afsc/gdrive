@@ -20,14 +20,14 @@
 gdrive_upload <- function(local_path, gdrive_dribble, skip_prompt = FALSE) {
 
   # Ensure googledrive token is active
-  if(!gdrive_token()) return(invisible())
+  if(!gdrive_token()) {return(invisible())}
 
   # Parse the local path to get the directory, file name, extension, and whether a version flag exists
   l_path <- parse_local_path(local_path)
   # If the local path doesn't exist, abort!
-  if( !l_path$local_exists ) stop(paste0(crayon::cyan(local_path), " cannot be found."))
+  if( !l_path$local_exists ) {stop(paste0(crayon::cyan(local_path), " cannot be found."))}
   # Prevent uploading files with a version suffix.
-  if( l_path$ver_flag ) stop("Do not upload files with a version suffix!")
+  if( l_path$ver_flag ) {stop("Do not upload files with a version suffix!")}
   # Parse the path to the google drive, looking for the files specified in local_path
   g_path <- parse_dribble(gdrive_dribble, l_path)
   
@@ -45,7 +45,7 @@ gdrive_upload <- function(local_path, gdrive_dribble, skip_prompt = FALSE) {
   if( nrow(g_path$gdrive_item) == 0 ) {
     # Upload File - If the file does not yet exist on the gdrive, upload the file to the gdrive
     cat(paste0(
-      crayon::cyan(local_path), " will be uploaded to ", crayon::yellow(gdrive_dribble$path),
+      crayon::cyan(local_path), " will be uploaded to ", crayon::yellow(gdrive_dribble$name),
       " as ", crayon::yellow("[ver1]"), ".\n"
     ))
     if( !skip_prompt ) {
@@ -54,7 +54,7 @@ gdrive_upload <- function(local_path, gdrive_dribble, skip_prompt = FALSE) {
         message = "Proceed with initial upload? (Y/N)"
       )
     }
-    if( is.null(upload_response) ) upload_response <- "N"
+    if( is.null(upload_response) ) {upload_response <- "N"}
     upload_response <- toupper(upload_response)
     if( upload_response == "Y" ){
       # Upload the file. Make the modifiedTime match that of the local file
@@ -91,7 +91,7 @@ gdrive_upload <- function(local_path, gdrive_dribble, skip_prompt = FALSE) {
             " appears to be BEHIND the Gdrive. Are you sure you want to continue with the upload? (Y/N)"
           )
         )
-        if( is.null(local_behind_response) ) local_behind_response <- "N"
+        if( is.null(local_behind_response) ) {local_behind_response <- "N"}
         local_behind_response <- toupper(local_behind_response)
         if( local_behind_response == "N" ){
           return(cat("Aborting upload."))
@@ -104,7 +104,7 @@ gdrive_upload <- function(local_path, gdrive_dribble, skip_prompt = FALSE) {
       cat(paste0("Local is ", crayon::bold("ahead of")), paste0("the gdrive: [ver", g_path$current_ver, "]\n"))
       # Prepare to update
       cat(paste0(
-        crayon::bold(l_path$name), " in ", crayon::yellow(gdrive_dribble$path), " will be updated to ",
+        crayon::bold(l_path$name), " in ", crayon::yellow(gdrive_dribble$name), " will be updated to ",
         crayon::yellow(paste0("[ver", g_path$current_ver + 1,  "]")), ".\n"
       ))
       if( !skip_prompt ) {
@@ -113,7 +113,7 @@ gdrive_upload <- function(local_path, gdrive_dribble, skip_prompt = FALSE) {
           message = "Proceed with upload and update? (Y/N)"
         )
       }
-      if( is.null(update_response) ) update_response <- "N"
+      if( is.null(update_response) ) {update_response <- "N"}
       update_response <- toupper(update_response)
       if ( update_response == "N"){
         return(cat("Aborting upload."))
