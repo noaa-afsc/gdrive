@@ -25,7 +25,7 @@
 #' }
 #'
 #' @export
-gdrive_dir <- function(folder = NULL, shared_id = "default_gdrive_id") {
+gdrive_dir <- function(shared_id = "default_gdrive_id", folder = NULL) {
   
   if (!is.character(shared_id) | length(shared_id) != 1) {
     stop("'id' needs to be a length = 1 character string.")
@@ -204,7 +204,7 @@ gdrive_dir <- function(folder = NULL, shared_id = "default_gdrive_id") {
   depths <- sapply(path_split, length)
   names_only <- sapply(path_split, function(x) x[length(x)])
   
-  # Interlocking Tree Render Engine
+  # Interlocking Tree Render Engine (With ASCII-compliant Unicode Escapes)
   n <- nrow(out)
   tree_strings <- character(n)
   
@@ -214,7 +214,7 @@ gdrive_dir <- function(folder = NULL, shared_id = "default_gdrive_id") {
       
       if (d == 1) {
         has_later_sibling <- any(depths[(i + 1):n] == 1, na.rm = TRUE) && (i < n)
-        prefix <- if (has_later_sibling) " ├── " else " ╰── "
+        prefix <- if (has_later_sibling) " \u251c\u2500\u2500 " else " \u2514\u2500\u2500 "
         tree_strings[i] <- paste0(prefix, names_only[i], "/")
       } else {
         indent <- ""
@@ -224,12 +224,12 @@ gdrive_dir <- function(folder = NULL, shared_id = "default_gdrive_id") {
             for (k in (i + 1):n) {
               if (depths[k] < j) break
               if (depths[k] == j) {
-                has_later_sibling <- TRUE # 👈 FIX: Added missing assignment arrow '<-'
+                has_later_sibling <- TRUE
                 break
               }
             }
           }
-          indent <- paste0(indent, if (has_later_sibling) " │   " else "     ")
+          indent <- paste0(indent, if (has_later_sibling) " \u2502   " else "     ")
         }
         
         is_last_child <- TRUE
@@ -243,7 +243,7 @@ gdrive_dir <- function(folder = NULL, shared_id = "default_gdrive_id") {
           }
         }
         
-        branch <- if (is_last_child) " ╰── " else " ├── "
+        branch <- if (is_last_child) " \u2514\u2500\u2500 " else " \u251c\u2500\u2500 "
         tree_strings[i] <- paste0(indent, branch, names_only[i], "/")
       }
     }
@@ -256,9 +256,9 @@ gdrive_dir <- function(folder = NULL, shared_id = "default_gdrive_id") {
   out$Directory <- apply(out, 1, function(x) {
     paste0(x["clean_tree_dir"], paste(rep(" ", times = as.numeric(x["ws"])), collapse = ""))
   })
-  rownames(out) <- seq_len(nrow(out))
+  out$row <- seq_len(nrow(out))
   
-  # Print with clear, isolated crayon blocks
+  # Print headers and output matrix frame
   sd_name <- gdrive_head$name
   cat("Shared Drive: ", crayon::yellow(sd_name), "\n", sep = "")
   
@@ -267,5 +267,5 @@ gdrive_dir <- function(folder = NULL, shared_id = "default_gdrive_id") {
     cat("Folder Target: ", crayon::yellow(display_folder), "\n", sep = "")
   }
   
-  print(out[, c("Directory", "files", "gdrive_path")],right = FALSE)
+  print(out[, c("row", "Directory", "files", "gdrive_path")], row.names = FALSE, right = FALSE)
 }
