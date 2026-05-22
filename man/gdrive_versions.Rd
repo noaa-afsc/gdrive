@@ -4,12 +4,14 @@
 \alias{gdrive_versions}
 \title{View the Revision History of a Data File on the Gdrive}
 \usage{
-gdrive_versions(local_path, gdrive_dribble)
+gdrive_versions(local_path, gdrive_dribble, ...)
 }
 \arguments{
 \item{local_path}{the name of the .rdata or .rds file on the Gdrive}
 
 \item{gdrive_dribble}{the \code{dribble} class object of the folder where your requested file resides.}
+
+\item{...}{not used, but allows you to easily replace calls to gdrive_versions without removing additional args}
 }
 \value{
 Returns a data.frame showing the file's revision history, including modification dates and users and file size
@@ -18,10 +20,8 @@ Returns a data.frame showing the file's revision history, including modification
 View the Revision History of a Data File on the Gdrive
 }
 \examples{
-\dontrun{
-  gdrive_versions(
-     "geoff_mayhew_tutorial.rdata",
-     gdrive_set_dribble("Google Drive Test/")
-  )
-}
+gdrive_versions(
+   "geoff_mayhew_tutorial.rdata",
+   gdrive_set_dribble("Google Drive Test/")
+)
 }
