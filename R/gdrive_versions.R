@@ -21,9 +21,14 @@ gdrive_versions <- function(local_path, gdrive_dribble, ...){
   local_path <- basename(local_path)
   
   # Make the dribble of the local_path
+  # Escaping single quotes in case your file name has them (e.g., "User's Data")
+  clean_name <- gsub("'", "\\\\'", local_path)
+  # Build a case-insensitive query string. 'name = ...' in the Google Drive API v3 is case-INsensitive by default!
+  query_str <- paste0("name = '", clean_name, "' and '", gdrive_dribble$id, "' in parents and trashed = false")
+  # Query the API directly (blazing fast)
   gdrive_item <- googledrive::with_drive_quiet(
-    googledrive::drive_get(
-      path = paste0(gdrive_dribble$path, local_path),
+    googledrive::drive_find(
+      q = query_str,
       shared_drive = googledrive::as_id(gdrive_dribble$shared_drive_id)
     )
   )
