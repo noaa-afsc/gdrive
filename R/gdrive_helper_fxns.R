@@ -157,9 +157,9 @@ shared_drive_ls <- function(gdrive_dribble) {
       q = query,
       supportsAllDrives = TRUE,
       includeItemsFromAllDrives = TRUE,
-      fields = "files(id, name, kind, mimeType, createdTime, size)",
+      fields = "files(id, name, kind, mimeType, createdTime, modifiedTime, size)",
       corpora = "drive",
-      orderBy = "recency desc",
+      orderBy = "modifiedTime desc",
       driveId = gdrive_dribble$shared_drive_id
     )
   )
