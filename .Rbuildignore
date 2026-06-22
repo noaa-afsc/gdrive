@@ -3,4 +3,4 @@
 ^\.github$
 ^\.gitleaks\.toml$
 ^\.Rproj\.user$
-^test$
+^tests/function_test_script.R$
