@@ -3,7 +3,7 @@ Within NOAA, we are directed to not upload any data that may contain confidentia
 - all data is securely stored and versioned in the Google Shared Drive
 - collaborators can conveniently upload and download their data from the same scripts
 - checks are performed to ensure all collaborators are up-to-date
-- compatibiltiy with google cloud workstations
+- compatibility with google cloud workstations
 
 These functions are built such that data files (currently only `.Rdata` and `.Rds` formats are fully-supported) cannot be deleted, moved, or renamed from the shared drives, but file versions can be updated. Therefore, any contributor within a Google Shared drive with 'contributor' level access can utilize this package without fear of accidental losses. There is no risk of losing anything on the shared drive by uploading, as all prior versions are retained forever and easily accessible.
 
