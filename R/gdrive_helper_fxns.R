@@ -23,7 +23,8 @@ gdrive_token <- function() {
       # Set-up instructions for adding your token
       token_setup_msg <- paste0(
         "\033[1mPlease upload your token from your non-cloud local machine to your cloud's .secrets/gargle folder.\033[22m\n\n",
-        "To locate your token, on your \033[1mlocal machine\033[22m, run:     ", crayon::green("gdrive:::gdrive_gcw_setup()"), "\n\n",
+        "  1: \033[1mIn the Google Cloud Workstation\033[22m, go to the 'Files' navigation pane and click 'Upload'. Leave this window open.\n\n",
+        "  2: \033[1mOn your local machine\033[22m, run:     ", crayon::green("gdrive:::gdrive_gcw_setup()"), "\n\n",
         "It will identify your most recently-created token ending in '@noaa.gov'.\n",
         "You will then 'Upload' this file to your Google Cloud Workstation's .secrets/gargle folder.\n\n"
       )
