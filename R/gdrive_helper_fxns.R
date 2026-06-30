@@ -22,13 +22,10 @@ gdrive_token <- function() {
       
       # Set-up instructions for adding your token
       token_setup_msg <- paste0(
-        "\033[1mPlease upload your token from your non-cloud local machine to your cloud's secrets folder.\033[22m\n\n",
-        "1: \033[1mOn your local machine\033[22m, run:     ", crayon::green("gargle:::gargle_oauth_sitrep()"), "\n",
-        "   to locate your most recently-created token ending in '@noaa.gov'\n",
-        "   Just take note of where this is, as you're going to navigate there in a moment.\n\n",
-        "2: \033[1mOn your cloud instance\033[22m, navigate to your 'files' pane ", "\u2192 More \u2192 and enable 'Show Hidden Files'\n",
-        "   Click on 'Home' and navigate to your newly-created `.secrets/gargle` folder.\n",
-        "   Click `Upload`, then 'Choose File' and navigate to your token from your local machine.\n\n"
+        "\033[1mPlease upload your token from your non-cloud local machine to your cloud's .secrets/gargle folder.\033[22m\n\n",
+        "To locate your token, on your \033[1mlocal machine\033[22m, run:     ", crayon::green("gdrive:::gdrive_gcw_setup()"), "\n\n",
+        "It will identify your most recently-created token ending in '@noaa.gov'.\n",
+        "You will then 'Upload' this file to your Google Cloud Workstation's .secrets/gargle folder.\n\n"
       )
       
       # If on the cloud workstation, see if a token already exists
@@ -67,7 +64,8 @@ gdrive_token <- function() {
           system(paste("chmod 700", secrets_dir))
           message("Secrets folder created at: ",  file.path("/.secrets", "gargle"))
           # See if this refreshes the files pane to show the newly created /.secrets folder
-          rstudioapi::filesPaneNavigate(home_dir)
+          cat(paste0("Switching to the ", crayon::cyan(".secrets/gargle folder"), " in the 'Files' pane ...\n\n"))
+          rstudioapi::filesPaneNavigate(gargle_dir)
         } 
         
         # Instruct the user for how to manually add their token to their cloud instance
@@ -80,6 +78,31 @@ gdrive_token <- function() {
       return(invisible(TRUE))
     }
   } else return(invisible(TRUE))
+}
+
+#' Setup your Google Shared Drive token on the GCW
+#'
+#' @details
+#' In order to access the Shared Google Drive in the cloud, you have to upload credentials from your local machine to
+#' your workstation. This function helps you locate this file on your local machine.
+#' @return Opens a file explorer window that contains your token
+#' @keywords internal
+gdrive_gcw_setup <- function(){
+  
+  cache <- gargle:::cache_locate()
+  cache.files <- list.files(cache)
+  cache.files.info <- file.info(file.path(cache, cache.files))
+  
+  cat(paste0("Opening a File Explorer window for ", cache, " ...\n\n"))
+  shell.exec(cache)
+  
+  cat(paste0(
+    "  ",
+    crayon::cyan(cache.files[which.max(cache.files.info$ctime)]), "\n  is your most recent token.\n\n",
+    "Click and drag this file from your File Explorer window to your Google Cloud Workstation and drop it\n",
+    "on the 'Choose File' button. Then click 'OK'."
+  ))
+  
 }
 
 
