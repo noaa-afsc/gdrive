@@ -26,14 +26,14 @@
 gdrive_set_dribble <- function(gdrive_path = NULL, shared_id = "default_gdrive_id", folder_id = NULL){
 
   # folder_id is required if working with collaborators who have shared access to a subfolder but not root access.
-  if(is.null(gdrive_path) & is.null(folder_id)) stop("Either gdrive_path and/or folder_id must be specified!")
+  if(is.null(gdrive_path) & is.null(folder_id)) { stop("Either gdrive_path and/or folder_id must be specified!") }
   if(!is.null(gdrive_path) & !is.null(shared_id)) {
-    if( !is.character(gdrive_path) | length(gdrive_path) != 1) stop("'id' needs to be a length = 1 character string.")
-    if( !is.character(shared_id) | length(shared_id) != 1) stop("'shared_id' needs to be a length = 1 character string.")
+    if( !is.character(gdrive_path) | length(gdrive_path) != 1) { stop("'id' needs to be a length = 1 character string.") }
+    if( !is.character(shared_id) | length(shared_id) != 1) { stop("'shared_id' needs to be a length = 1 character string.") }
   }
 
   # Ensure googledrive token is active
-  if(!gdrive_token()) return(invisible())
+  if(!gdrive_token()) { return(invisible()) }
   
   # Get the dribble object from the gdrive_path. It will contain rows for all enclosed folders and files.
   if(!is.null(folder_id)) {
@@ -46,7 +46,7 @@ gdrive_set_dribble <- function(gdrive_path = NULL, shared_id = "default_gdrive_i
     # Check the address of the shared_id
     id <- gdrive_get_shared_id(shared_id)
     dribble_out <- googledrive::with_drive_quiet(
-      googledrive::drive_get(path = gdrive_path, shared_drive = googledrive::as_id(id))
+      googledrive::drive_get(path = paste0("Drive/", gdrive_path), shared_drive = googledrive::as_id(id))
     )
   }
 
