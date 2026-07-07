@@ -46,8 +46,12 @@ gdrive_set_dribble <- function(gdrive_path = NULL, shared_id = "default_gdrive_i
     # Check the address of the shared_id
     id <- gdrive_get_shared_id(shared_id)
     dribble_out <- googledrive::with_drive_quiet(
-      googledrive::drive_get(path = paste0("Drive/", gdrive_path), shared_drive = googledrive::as_id(id))
+      googledrive::drive_get(path = gdrive_path, shared_drive = googledrive::as_id(id))
     )
+    # If you get more than one match, keep the one with the root folder as the parent
+    if(nrow(dribble_out) > 1 ) {
+      dribble_out <- dribble_out[which(googledrive:::drive_reveal_parent(dribble_out)$id_parent == id), ]
+    }
   }
 
   # Only allow folders to be set as targets (exclude files)
