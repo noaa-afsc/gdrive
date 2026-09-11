@@ -1,6 +1,6 @@
 #' Set all versions of a file's keepForever option to TRUE
 #'
-#' If a file on the drive is ever manually uploaded (instead of using `gdrive_upload()`), it's `keepForever` option 
+#' If a file on the drive is ever manually uploaded (instead of using `gdrive_upload()`), its `keepForever` option 
 #' will not be set to TRUE automatically. This will cause checks in the package to throw warnings. This function will
 #' scan through all versions of a file where keepForever is FALSE and set them to TRUE.
 #' 
