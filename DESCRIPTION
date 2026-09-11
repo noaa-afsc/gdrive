@@ -7,7 +7,6 @@ Description: Tools for using the Google Shared Drive as a secure data repository
 License: file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.3
 Imports: 
     cli,
     crayon,
@@ -16,3 +15,4 @@ Imports:
     googledrive,
     purrr,
     rstudioapi
+Config/roxygen2/version: 8.1.0
