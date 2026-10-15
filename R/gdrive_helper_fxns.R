@@ -343,10 +343,10 @@ parse_dribble <- function(gdrive_dribble, l_path) {
     }
     # Check to make sure keepForever is checked for all versions
     if( any(sapply(revision_lst, "[[", "keepForever") != T) ){
-      warning(cat(paste0(
+      warning(paste0(
         "Versions ", paste0(which(sapply(revision_lst, "[[", "keepForever") != T), collapse = ", "),
-        "have keepForever = FALSE!\n"
-      )))
+        " have keepForever = FALSE!\n"
+      ))
     }
     
   } else if ( nrow(gdrive_item) == 0 ){
