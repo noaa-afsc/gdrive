@@ -85,7 +85,7 @@ gdrive_keep_forever <- function(local_path, gdrive_dribble, ...) {
     )
     res_update <- googledrive::request_make(req_update)
     if (res_update$status_code == 200) {
-      cat(paste0("Version ", i, "now has keepForever set to TRUE.\n"))
+      cat(paste0("Version ", i, " now has keepForever set to TRUE.\n"))
     } else {
       cat(paste0("FAILURE!!! Version ", i, "could not have keepForever to set to TRUE!.\n"))
     }
