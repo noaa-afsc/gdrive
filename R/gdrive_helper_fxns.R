@@ -345,7 +345,7 @@ parse_dribble <- function(gdrive_dribble, l_path) {
     if( any(sapply(revision_lst, "[[", "keepForever") != T) ){
       warning(paste0(
         "Versions ", paste0(which(sapply(revision_lst, "[[", "keepForever") != T), collapse = ", "),
-        " have keepForever = FALSE!\n"
+        " have keepForever = FALSE!\nUse function ", crayon::yellow("gdrive_keep_forever()"), " to fix this!\n"
       ))
     }
     
