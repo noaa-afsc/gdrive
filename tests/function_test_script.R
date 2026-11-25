@@ -28,7 +28,7 @@ gdrive_set_dribble(folder_id = "1x0UjP5tEyTCgUdMq_43PoN2ww7zFrjaA")
 
 # Save and upload a dummy dataset
 dummy_dat <- cars
-local_dat_filepath <- "test/test_data/dummy_dat.Rdata"
+local_dat_filepath <- "tests/test_data/dummy_dat.Rdata"
 save(dummy_dat, file = local_dat_filepath)
 gdrive_upload(local_dat_filepath, test_data_dribble)
 #   local_path <- local_dat_filepath; gdrive_dribble <- test_data_dribble; ver = NULL
