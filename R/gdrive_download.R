@@ -66,7 +66,9 @@ gdrive_download <- function(local_path, gdrive_dribble, ver = NULL, temp = F) {
       # Create a temporary folder and attach the file name
       temp_path <- paste0(normalizePath(tempdir(), winslash = "/"), "/", g_path$gdrive_item$name)
       # Download the file
-      cat(paste0("Downloading ", crayon::yellow(g_path$gdrive_item$name), " to a temporary folder."))
+      cat(paste0(
+        "Downloading ", crayon::yellow(paste0(g_path$gdrive_item$name, " [ver", g_path$current_ver, "]")),
+        " to a temporary folder."))
       googledrive::drive_download(file = g_path$gdrive_item, path = temp_path, overwrite = T)
       # Return the path so that the output can be easily loaded
       return(invisible(temp_path))
