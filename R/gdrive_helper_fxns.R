@@ -77,6 +77,7 @@ gdrive_token <- function() {
     } else {
       # If NOT on the cloud workstation, use locally saved token
       googledrive::drive_auth(email = "*@noaa.gov")
+      cat("\n")
       return(invisible(TRUE))
     }
   } else return(invisible(TRUE))
