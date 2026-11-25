@@ -77,7 +77,6 @@ gdrive_token <- function() {
     } else {
       # If NOT on the cloud workstation, use locally saved token
       googledrive::drive_auth(email = "*@noaa.gov")
-      cat("\n")
       return(invisible(TRUE))
     }
   } else return(invisible(TRUE))
@@ -125,7 +124,7 @@ gdrive_get_shared_id <- function(shared_id) {
   if(shared_id == "default_gdrive_id") {
     shared_id.pull <- Sys.getenv("default_gdrive_id")
     if(nchar(shared_id.pull) == 0) {
-      cat("You have not yet specified a Google Shared Drive as your default.\n\n")
+      cat("\nYou have not yet specified a Google Shared Drive as your default.\n\n")
       cat(paste0(
         "Run ", crayon::green("usethis::edit_r_environ()"), " to add your default shared drive ID using the syntax:\n",
         "\033[1m  default_gdrive_id = \"<drive_id>\"\033[22m\n\n",
