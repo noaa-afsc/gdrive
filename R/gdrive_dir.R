@@ -25,7 +25,7 @@
 #' }
 #'
 #' @export
-gdrive_dir <- function(shared_id = "default_gdrive_id", folder = NULL) {
+gdrive_dir <- function(folder = NULL, shared_id = "default_gdrive_id") {
   
   if (!is.character(shared_id) | length(shared_id) != 1) {
     stop("'id' needs to be a length = 1 character string.")
@@ -36,6 +36,7 @@ gdrive_dir <- function(shared_id = "default_gdrive_id", folder = NULL) {
   
   # Check the address of the shared_id
   id <- gdrive_get_shared_id(shared_id)
+  if(is.null(id)) return()
   
   tryCatch(
     gdrive_head <- googledrive::with_drive_quiet(googledrive::shared_drive_get(id = id)),
